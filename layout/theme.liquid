@@ -12,6 +12,21 @@
   <meta name="description" content="">
 
   {{ content_for_header }}
+
+  {%- render 'css-variables' with 'critical' -%}
+
+  {% style %}
+    html {
+      font-size: 62.5%;
+      scroll-behavior: smooth;
+    }
+    body {
+      margin: 0;
+      font-family: var(--font-family-base);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+  {% endstyle %}
 </head>
 
 <body>

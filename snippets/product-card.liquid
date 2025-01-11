@@ -1,0 +1,87 @@
+{% assign days_limit = 365 %}
+{% assign published_days = product.published_at | date: '%s' | divided_by: 86400 %}
+{% assign today = 'now' | date: '%s' | divided_by: 86400 %}
+{% assign days_since = today | minus: published_days %}
+
+<product-card class="product-card">
+  {% if days_since < days_limit %}
+    <div class="product-card__badges">
+      <span class="badge badge--new">{% render 'icons' with icon: 'badge-new' %} New</span>
+      {% assign promo_numbers = "2,7,11" | split: ',' %}
+      {% assign index = index | default: 1 %}
+      {% assign index_string = index | append: '' %}
+      {% if promo_numbers contains index_string %}
+        <span class="badge badge--promo">{% render 'icons' with icon: 'badge-promo' %} Get X for Y</span>
+      {% endif %}
+      {% assign index = index | plus: 1 %}
+    </div>
+  {% endif %}
+
+  <div class="product-card__content">
+    <a href="{{ product.url }}" class="product-card__image-link">
+      {% if product.featured_image %}
+        <div class="product-card__image-wrapper">
+          {{ 
+            product.featured_image | 
+            image_url: width: 270, height: 278, crop: 'center' | 
+            image_tag: 
+              class: 'product-card__image',
+              alt: product.featured_image.alt,
+              width: 270,
+              height: 278
+          }}
+        </div>
+      {% endif %}
+    </a>
+    
+    <div class="product-card__info">
+      <div class="product-card__header">
+        <a href="{{ product.url }}" class="product-card__title-link">
+          <h2 class="product-card__title">{{ product.title }}</h2>
+        </a>
+        
+        {% if product.variants.first %}
+          <p class="product-card__variant">
+            <span class="product-card__variant-label">{{ product.options[0] }}</span>
+            <span class="product-card__variant-value">{{ product.variants.first.options[0] }}</span>
+          </p>
+        {% endif %}
+      </div>
+      
+      <div class="product-card__purchase">
+        <div class="product-card__quantity" 
+          data-variant-id="{{ product.variants.first.id }}"
+          data-inventory="{{ product.variants.first.inventory_quantity }}">
+          <button 
+            class="quantity-button minus" 
+            aria-label="Decrease quantity"
+            {% if product.variants.first.inventory_quantity == 0 %}disabled{% endif %}>
+            {% render 'icons' with icon: 'minus' %}
+          </button>
+          <input 
+            type="number" 
+            value="0" 
+            min="0" 
+            max="{{ product.variants.first.inventory_quantity }}"
+            class="quantity-input" 
+            data-item-key=""
+            aria-label="Product quantity"
+            {% if product.variants.first.inventory_quantity == 0 %}disabled{% endif %}
+          >
+          <button 
+            class="quantity-button plus" 
+            aria-label="Increase quantity"
+            {% if product.variants.first.inventory_quantity == 0 %}disabled{% endif %}>
+            {% render 'icons' with icon: 'plus' %}
+          </button>
+        </div>
+        <p class="product-card__price">
+          {% if product.compare_at_price > product.price %}
+            <span class="product-card__price--compare">{{ product.compare_at_price | money }}</span>
+          {% endif %}
+          <span class="product-card__price--current">{{ product.price | money }}</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</product-card> 

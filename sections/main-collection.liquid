@@ -1,0 +1,39 @@
+{{ 'collection.css' | asset_url | stylesheet_tag }}
+{{ 'product-card.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-card.js' | asset_url }}" defer></script>
+
+<div class="collection-container">
+    <div class="collection-header">
+      <h1>{{ collection.title }}</h1>
+      {% if collection.description != blank %}
+        <div class="collection-description">
+          {{ collection.description }}
+        </div>
+      {% endif %}
+    </div>
+  
+    {% paginate collection.products by section.settings.products_per_page %}
+    <div class="collection-grid">
+        {% for product in collection.products %}
+            {% render 'product-card', product: product, index: forloop.index %}
+        {% endfor %}
+    </div>
+    {% endpaginate %}
+</div>
+
+{% schema %}
+{
+  "name": "Collection Template",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 4,
+      "max": 24,
+      "step": 4,
+      "label": "Products per page",
+      "default": 16
+    }
+  ]
+}
+{% endschema %}
