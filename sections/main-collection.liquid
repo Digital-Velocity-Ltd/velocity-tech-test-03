@@ -1,0 +1,31 @@
+<section>
+  <p>⚑ debug: main-collection.liquid is rendering</p>
+
+  {% paginate collection.products by 24 %}
+    <h1>{{ collection.title | default: 'Collection' }}</h1>
+    <p>⚑ products_count = {{ collection.products_count }}</p>
+
+    {% for product in collection.products %}
+      <article>
+        <a href="{{ product.url }}">{{ product.title }}</a> — {{ product.price | money }}
+        {% if product.available %}
+          <form method="post" action="{{ routes.cart_add_url }}" style="display:inline">
+            <input type="hidden" name="id" value="{{ product.first_available_variant.id }}">
+            <input name="quantity" value="1" size="2">
+            <button type="submit">Add</button>
+          </form>
+        {% endif %}
+      </article>
+    {% else %}
+      <p>No products found.</p>
+    {% endfor %}
+
+    {% if paginate.pages > 1 %}
+      <nav>
+        {% if paginate.previous %}<a href="{{ paginate.previous.url }}">Prev</a>{% endif %}
+        <span>Page {{ paginate.current_page }} of {{ paginate.pages }}</span>
+        {% if paginate.next %}<a href="{{ paginate.next.url }}">Next</a>{% endif %}
+      </nav>
+    {% endif %}
+  {% endpaginate %}
+</section>
