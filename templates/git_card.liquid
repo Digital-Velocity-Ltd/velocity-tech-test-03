@@ -1,0 +1,21 @@
+{% layout none %}
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ 'gift_cards.issued.title' | t }}</title>
+  {{ 'theme.css' | asset_url | stylesheet_tag }}
+</head>
+<body class="gift-card">
+  <main>
+    <h1>{{ 'gift_cards.issued.subtext' | t }}</h1>
+    <p><strong>{{ gift_card.balance | money_with_currency }}</strong></p>
+    <p>{{ gift_card.code | format_code }}</p>
+    <p><a href="{{ gift_card.url }}" target="_blank" rel="noopener">{{ 'gift_cards.issued.print' | t }}</a></p>
+    {% if gift_card.pass_url %}
+      <p><a href="{{ gift_card.pass_url }}">Add to Apple Wallet</a></p>
+    {% endif %}
+  </main>
+</body>
+</html>
