@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="{{ shop.locale }}">
 <head>
@@ -6,6 +7,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="">
   <link rel="canonical" href="{{ canonical_url }}">
+  {{ 'theme.css' | asset_url | stylesheet_tag }}
 
   <title>{{ shop.name }}</title>
 

@@ -1,0 +1,23 @@
+:root{
+  --container: 1100px; 
+  --gap: 24px;
+}
+
+body { 
+    font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    color:#111;
+    margin:0
+}
+
+.container {
+    width:min(var(--container),92vw);
+    margin-inline:auto
+}
+
+.grid {
+    display:grid;
+    gap:var(--gap)
+}
+
+/* Media Queries */
+@media(min-width:1024px){.grid--4{grid-template-columns:repeat(4,1fr)}}
