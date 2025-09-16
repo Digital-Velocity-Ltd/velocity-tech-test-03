@@ -1,0 +1,45 @@
+<header class="site-header" role="banner">
+  <div class="container site-header__inner">
+    <a class="site-header__brand" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
+      {% if section.settings.logo %}
+        <img
+          src="{{ section.settings.logo | image_url: width: 220 }}"
+          width="{{ section.settings.logo.width }}"
+          height="{{ section.settings.logo.height }}"
+          alt="{{ shop.name | escape }}"
+          loading="lazy">
+      {% else %}
+        <span class="site-header__title">{{ shop.name }}</span>
+      {% endif %}
+    </a>
+
+    {% if section.settings.menu %}
+      <nav class="site-nav" role="navigation" aria-label="Main navigation">
+        <ul class="site-nav__list">
+          {% for link in section.settings.menu.links %}
+            <li class="site-nav__item"><a class="site-nav__link" href="{{ link.url }}">{{ link.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </nav>
+    {% endif %}
+
+    <button
+      class="btn btn--secondary site-header__cart"
+      data-cart-open
+      aria-controls="cart-drawer"
+      aria-haspopup="dialog"
+      aria-expanded="false">
+      Cart (<span data-cart-count>{{ cart.item_count }}</span>)
+    </button>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Site header",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "link_list", "id": "menu", "label": "Main menu" }
+  ]
+}
+{% endschema %}

@@ -1,35 +1,79 @@
-<section>
- {% paginate collection.products by 24 %}
+{% liquid
+  assign per_page = section.settings.products_per_page | default: 24
+%}
+
+<section class="collection">
   <div class="container">
-    <h1>{{ collection.title | default: 'Collection' }}</h1>
-    <p>⚑ products_count = {{ collection.products_count }}</p>
+    <h1 class="collection__title">{{ collection.title | default: 'Products' }}</h1>
 
-    <div class="grid grid--4">
-      {% for product in collection.products %}
-        <article style="border:1px solid #e6e6e6;padding:12px">
-          <a href="{{ product.url }}">{{ product.title }}</a> — {{ product.price | money }}
-          {% if product.available %}
-            <form method="post" action="{{ routes.cart_add_url }}" style="margin-top:8px">
-              <input type="hidden" name="id" value="{{ product.first_available_variant.id }}">
-              <input name="quantity" value="1" size="2">
-              <button type="submit">Add</button>
-            </form>
-          {% endif %}
-        </article>
-      {% else %}
-        <p>No products found.</p>
-      {% endfor %}
-    </div>
+    {% paginate collection.products by per_page %}
+      <div class="grid grid--4">
+        {% for product in collection.products %}
+          <article class="pcard" data-product-id="{{ product.id }}">
+            <a class="pcard__media" href="{{ product.url }}">
+              {% assign img = product.featured_image %}
+              {% if img %}
+                <img
+                  class="pcard__img"
+                  src="{{ img | image_url: width: 300 }}"
+                  srcset="{{ img | image_url: width: 400 }} 400w, {{ img | image_url: width: 400 }} 600w, {{ img | image_url: width:400 }} 900w"
+                  sizes="(min-width:1024px) 25vw, 90vw"
+                  width="{{ img.width }}"
+                  height="{{ img.height }}"
+                  alt="{{ img.alt | escape }}"
+                  loading="lazy">
+              {% endif %}
+              <div class="pcard__badges">
+                {% if product.tags contains 'new' %}<span class="badge badge--new">New</span>{% endif %}
+                {% if product.compare_at_price > product.price %}<span class="badge badge--sale">Sale</span>{% endif %}
+              </div>
+            </a>
 
-    {% if paginate.pages > 1 %}
-      <nav>
-        {% if paginate.previous %}<a href="{{ paginate.previous.url }}">Prev</a>{% endif %}
-        <span>Page {{ paginate.current_page }} of {{ paginate.pages }}</span>
-        {% if paginate.next %}<a href="{{ paginate.next.url }}">Next</a>{% endif %}
-      </nav>
-    {% endif %}
+            <div class="pcard__body">
+              <a class="pcard__title" href="{{ product.url }}">{{ product.title }}</a>
+              <div class="pcard__price">
+                <strong>{{ product.price | money }}</strong>
+                {% if product.compare_at_price > product.price %}
+                  <s class="pcard__compare">{{ product.compare_at_price | money }}</s>
+                {% endif %}
+              </div>
+
+              {% if product.available %}
+                <form class="pcard__actions" method="post" action="{{ routes.cart_add_url }}">
+                  <input type="hidden" name="id" value="{{ product.first_available_variant.id }}">
+                  <div class="qty" data-qty>
+                    <button type="button" data-qty-dec aria-label="Decrease quantity">−</button>
+                    <input name="quantity" value="1" inputmode="numeric" pattern="[0-9]*" aria-label="Quantity">
+                    <button type="button" data-qty-inc aria-label="Increase quantity">＋</button>
+                  </div>
+                  <button class="btn btn--primary" type="submit" aria-label="Add {{ product.title }} to cart">Add</button>
+                </form>
+              {% else %}
+                <p class="pcard__oos">Sold out</p>
+              {% endif %}
+            </div>
+          </article>
+        {% else %}
+          <p>No products found.</p>
+        {% endfor %}
+      </div>
+
+      {% if paginate.pages > 1 %}
+        <nav class="pagination" role="navigation" aria-label="Pagination">
+          {% if paginate.previous %}<a href="{{ paginate.previous.url }}" rel="prev">Previous</a>{% endif %}
+          <span>Page {{ paginate.current_page }} of {{ paginate.pages }}</span>
+          {% if paginate.next %}<a href="{{ paginate.next.url }}" rel="next">Next</a>{% endif %}
+        </nav>
+      {% endif %}
+    {% endpaginate %}
   </div>
-{% endpaginate %}
-
-
 </section>
+
+{% schema %}
+{
+  "name": "Main collection",
+  "settings": [
+    { "type": "range", "id": "products_per_page", "label": "Products per page", "min": 8, "max": 48, "step": 4, "default": 24 }
+  ]
+}
+{% endschema %}
