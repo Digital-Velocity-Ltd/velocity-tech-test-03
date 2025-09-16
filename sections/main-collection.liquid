@@ -1,24 +1,25 @@
 <section>
-  <p>⚑ debug: main-collection.liquid is rendering</p>
-
-  {% paginate collection.products by 24 %}
+ {% paginate collection.products by 24 %}
+  <div class="container">
     <h1>{{ collection.title | default: 'Collection' }}</h1>
     <p>⚑ products_count = {{ collection.products_count }}</p>
 
-    {% for product in collection.products %}
-      <article>
-        <a href="{{ product.url }}">{{ product.title }}</a> — {{ product.price | money }}
-        {% if product.available %}
-          <form method="post" action="{{ routes.cart_add_url }}" style="display:inline">
-            <input type="hidden" name="id" value="{{ product.first_available_variant.id }}">
-            <input name="quantity" value="1" size="2">
-            <button type="submit">Add</button>
-          </form>
-        {% endif %}
-      </article>
-    {% else %}
-      <p>No products found.</p>
-    {% endfor %}
+    <div class="grid grid--4">
+      {% for product in collection.products %}
+        <article style="border:1px solid #e6e6e6;padding:12px">
+          <a href="{{ product.url }}">{{ product.title }}</a> — {{ product.price | money }}
+          {% if product.available %}
+            <form method="post" action="{{ routes.cart_add_url }}" style="margin-top:8px">
+              <input type="hidden" name="id" value="{{ product.first_available_variant.id }}">
+              <input name="quantity" value="1" size="2">
+              <button type="submit">Add</button>
+            </form>
+          {% endif %}
+        </article>
+      {% else %}
+        <p>No products found.</p>
+      {% endfor %}
+    </div>
 
     {% if paginate.pages > 1 %}
       <nav>
@@ -27,5 +28,8 @@
         {% if paginate.next %}<a href="{{ paginate.next.url }}">Next</a>{% endif %}
       </nav>
     {% endif %}
-  {% endpaginate %}
+  </div>
+{% endpaginate %}
+
+
 </section>
