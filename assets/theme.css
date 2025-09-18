@@ -1,15 +1,3 @@
-/* Tokens (adjust later to match Figma) */
-:root{
-  --container: 1100px;
-  --gap: 24px;
-  --border: #e6e6e6;
-  --radius: 12px;
-  --text: #111;
-  --muted: #666;
-  --primary: #111;
-  --primary-contrast: #fff;
-}
-/* Tokens (adjust later to match Figma) */
 :root {
   --container: 1100px;
   --gap: 24px;
@@ -21,7 +9,6 @@
   --primary-contrast: #fff;
 }
 
-/* Layout from earlier */
 body {
   font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   margin: 0;
@@ -44,7 +31,6 @@ body {
   }
 }
 
-/* Product card */
 .pcard {
   display: flex;
   flex-direction: column;
@@ -159,6 +145,47 @@ body {
 .btn--primary {
   background: var(--primary);
   color: var(--primary-contrast);
+}
+
+.site-header {
+  position: sticky;    
+  top: 0;
+  z-index: 50;
+  width: 100%;          
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;  
+  gap: 16px;
+  padding: 12px 0;
+}
+
+.site-header__title {
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.site-header__logo {
+  display: block;
+  height: auto;
+  max-height: 44px;      
+}
+
+.site-header__right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.site-header__login,
+.site-header__cart {
+  padding: 0.45rem 0.8rem;
 }
 
 
