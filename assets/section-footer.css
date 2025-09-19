@@ -1,5 +1,11 @@
 .footer {
   border-top: 0.1rem solid rgba(var(--color-foreground), 0.08);
+  background-color: #1e3563;
+  color: white;
+}
+
+.footer__content-top page-width {
+  color: white;
 }
 
 .footer:not(.color-scheme-1) {

@@ -3,9 +3,9 @@ quantity-popover {
   display: block;
 }
 
-quantity-popover volume-pricing li:nth-child(odd) {
+/* quantity-popover volume-pricing li:nth-child(odd) {
   background: rgba(var(--color-foreground), 0.03);
-}
+} */
 
 quantity-popover volume-pricing li {
   font-size: 1.2rem;
@@ -123,7 +123,7 @@ quantity-popover .quantity__rules span:first-of-type {
 
 .quantity-popover-container {
   display: flex;
-  padding: 0.5rem 0.5rem 0.5rem 0;
+  /* padding: 0.5rem 0.5rem 0.5rem 0; */
 }
 
 .quantity-popover-container:not(.quantity-popover-container--hover) {
@@ -150,9 +150,9 @@ quantity-popover .quantity__rules span:first-of-type {
   }
 }
 
-quantity-popover .quantity {
+/* quantity-popover .quantity {
   background: rgb(var(--color-background));
-}
+} */
 
 quantity-popover .quantity__rules {
   margin-left: 0.8rem;
@@ -162,7 +162,12 @@ quantity-popover .quantity__rules .divider:nth-child(2)::before {
   content: none;
 }
 
-quantity-popover .quantity__button:not(:focus-visible):not(.focused),
+/* quantity-popover .quantity__button:not(:focus-visible):not(.focused),
 quantity-popover .quantity__input:not(:focus-visible):not(.focused) {
   background-color: initial;
+} */
+
+.color-scheme-1 {
+    --color-background:none;
+    --gradient-background: none;
 }

@@ -30,7 +30,6 @@ class CartNotification extends HTMLElement {
   close() {
     this.notification.classList.remove('active');
     document.body.removeEventListener('click', this.onBodyClick);
-
     removeTrapFocus(this.activeElement);
   }
 
@@ -49,16 +48,9 @@ class CartNotification extends HTMLElement {
 
   getSectionsToRender() {
     return [
-      {
-        id: 'cart-notification-product',
-        selector: `[id="cart-notification-product-${this.cartItemKey}"]`,
-      },
-      {
-        id: 'cart-notification-button',
-      },
-      {
-        id: 'cart-icon-bubble',
-      },
+      { id: 'cart-notification-product', selector: `[id="cart-notification-product-${this.cartItemKey}"]` },
+      { id: 'cart-notification-button' },
+      { id: 'cart-icon-bubble' },
     ];
   }
 
@@ -79,5 +71,4 @@ class CartNotification extends HTMLElement {
     this.activeElement = element;
   }
 }
-
 customElements.define('cart-notification', CartNotification);

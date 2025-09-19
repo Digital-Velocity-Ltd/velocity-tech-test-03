@@ -3,24 +3,53 @@ class CartDrawer extends HTMLElement {
     super();
 
     this.addEventListener('keyup', (evt) => evt.code === 'Escape' && this.close());
-    this.querySelector('#CartDrawer-Overlay').addEventListener('click', this.close.bind(this));
+    this.querySelector('#CartDrawer-Overlay')?.addEventListener('click', this.close.bind(this));
     this.setHeaderCartIconAccessibility();
+    this.bindClearAll();
   }
 
   setHeaderCartIconAccessibility() {
-    const cartLink = document.querySelector('#cart-icon-bubble');
-    if (!cartLink) return;
+    const attach = (el) => {
+      if (!el || el.dataset.cartBound) return;
+      el.dataset.cartBound = '1';
+      el.setAttribute('role', 'button');
+      el.setAttribute('aria-haspopup', 'dialog');
+      el.addEventListener('click', (event) => { event.preventDefault(); this.open(el); });
+      el.addEventListener('keydown', (event) => {
+        const k = event.key || event.code;
+        if (k === 'Enter' || k === ' ' || (k && k.toUpperCase() === 'SPACE')) {
+          event.preventDefault(); this.open(el);
+        }
+      });
+    };
+    document.querySelectorAll('#cart-icon-bubble, [data-cart-trigger]').forEach(attach);
+  }
 
-    cartLink.setAttribute('role', 'button');
-    cartLink.setAttribute('aria-haspopup', 'dialog');
-    cartLink.addEventListener('click', (event) => {
-      event.preventDefault();
-      this.open(cartLink);
-    });
-    cartLink.addEventListener('keydown', (event) => {
-      if (event.code.toUpperCase() === 'SPACE') {
-        event.preventDefault();
-        this.open(cartLink);
+  bindClearAll() {
+    const btn = this.querySelector('#CartDrawer-ClearAll');
+    if (!btn || btn.dataset.bound) return;
+    btn.dataset.bound = '1';
+    btn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      try {
+        await fetch('/cart/clear.js', { method: 'POST', headers: { Accept: 'application/json' } });
+        if (typeof window.refreshDrawerAndBubble === 'function') {
+          await window.refreshDrawerAndBubble();
+        } else {
+          const res = await fetch(`${routes.cart_url}?sections=cart-drawer,cart-icon-bubble`);
+          const html = await res.text();
+          const doc = new DOMParser().parseFromString(html, 'text/html');
+          const src = doc.querySelector('#CartDrawer');
+          const tgt = document.querySelector('#CartDrawer');
+          if (src && tgt) tgt.innerHTML = src.innerHTML;
+          const newBubble = doc.getElementById('cart-icon-bubble');
+          const oldBubble = document.getElementById('cart-icon-bubble');
+          if (newBubble && oldBubble) oldBubble.outerHTML = newBubble.outerHTML;
+        }
+        this.classList.add('is-empty');
+        this.open(); 
+      } catch (err) {
+        console.error('Clear all failed', err);
       }
     });
   }
@@ -29,10 +58,8 @@ class CartDrawer extends HTMLElement {
     if (triggeredBy) this.setActiveElement(triggeredBy);
     const cartDrawerNote = this.querySelector('[id^="Details-"] summary');
     if (cartDrawerNote && !cartDrawerNote.hasAttribute('role')) this.setSummaryAccessibility(cartDrawerNote);
-    // here the animation doesn't seem to always get triggered. A timeout seem to help
-    setTimeout(() => {
-      this.classList.add('animate', 'active');
-    });
+
+    setTimeout(() => { this.classList.add('animate', 'active'); });
 
     this.addEventListener(
       'transitionend',
@@ -71,8 +98,9 @@ class CartDrawer extends HTMLElement {
   }
 
   renderContents(parsedState) {
-    this.querySelector('.drawer__inner').classList.contains('is-empty') &&
-      this.querySelector('.drawer__inner').classList.remove('is-empty');
+    const inner = this.querySelector('.drawer__inner');
+    if (inner && inner.classList.contains('is-empty')) inner.classList.remove('is-empty');
+
     this.productId = parsedState.id;
     this.getSectionsToRender().forEach((section) => {
       const sectionElement = section.selector
@@ -84,7 +112,8 @@ class CartDrawer extends HTMLElement {
     });
 
     setTimeout(() => {
-      this.querySelector('#CartDrawer-Overlay').addEventListener('click', this.close.bind(this));
+      this.querySelector('#CartDrawer-Overlay')?.addEventListener('click', this.close.bind(this));
+      this.bindClearAll();
       this.open();
     });
   }
@@ -95,13 +124,8 @@ class CartDrawer extends HTMLElement {
 
   getSectionsToRender() {
     return [
-      {
-        id: 'cart-drawer',
-        selector: '#CartDrawer',
-      },
-      {
-        id: 'cart-icon-bubble',
-      },
+      { id: 'cart-drawer', selector: '#CartDrawer' },
+      { id: 'cart-icon-bubble' },
     ];
   }
 
@@ -113,24 +137,14 @@ class CartDrawer extends HTMLElement {
     this.activeElement = element;
   }
 }
-
 customElements.define('cart-drawer', CartDrawer);
 
 class CartDrawerItems extends CartItems {
   getSectionsToRender() {
     return [
-      {
-        id: 'CartDrawer',
-        section: 'cart-drawer',
-        selector: '.drawer__inner',
-      },
-      {
-        id: 'cart-icon-bubble',
-        section: 'cart-icon-bubble',
-        selector: '.shopify-section',
-      },
+      { id: 'CartDrawer', section: 'cart-drawer', selector: '.drawer__inner' },
+      { id: 'cart-icon-bubble', section: 'cart-icon-bubble', selector: '.shopify-section' },
     ];
   }
 }
-
 customElements.define('cart-drawer-items', CartDrawerItems);

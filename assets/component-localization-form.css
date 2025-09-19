@@ -110,6 +110,7 @@
 
 .disclosure {
   position: relative;
+  display: none;
 }
 
 .disclosure__button {
