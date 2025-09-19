@@ -1,58 +1,68 @@
-<img src="./velocity-tech-test.png" alt="drawing" width="100%"/>
+# Velocity Tech Test
 
-## Welcome, Developer!
+A **Dawn-based** Shopify theme customisation with a reworked cart drawer and quick-add flow. I used Dawn as the skeleton and layered changes where needed (drawer behaviour, quantity handling, **“Clear all”**, and some layout tweaks).
 
-You've been tasked with helping Digital Velocity bring a fresh collection page and a functional cart drawer to life. Your goal is to build these features from scratch, incorporating a structure for styling, JavaScript, and HTML that best suits your development style and approach.
+## Status at hand-off
 
-The purpose of this exercise isn't to complete everything but rather to demonstrate your thought process, coding practices, and overall implementation skills. You're free to spend as much or as little time on it as you're comfortable with.
+- ✅ Core cart drawer works (opens, renders items, totals, supports quantity changes)
+- ✅ **Clear all** button empties the cart
+- ✅ Collection “quick add” buttons update the cart and open the drawer
+- ✅ Drawer + header cart bubble refreshed via the Section Rendering API
+- ✅ Custom styling preserved (cart items use your classes)
 
-### Challange
+- ⚠️ Footer hasn’t been handled
+- ⚠️ Performance is a bit slow (see **Performance** below)
+- ⚠️ Relationship between the header cart and the drawer could be tighter (see **Cart/header coupling**)
 
-1. #### Collection Page
+## Files you’ll care about
 
-    Build a Collection Page that displays a grid of products, styled and structured to match the design specifications.
+### `assets/pcard-ajax.js`
+Client-side logic for:
+- Quick add (+/–) on collection/product cards  
+- In-drawer quantity updates  
+- **Clear all**  
+- Refreshing the entire `cart-drawer` section and `cart-icon-bubble` section (Dawn-style replacement)
 
-2. #### Cart Drawer
+### `assets/cart-drawer.js`
+Dawn’s drawer web component with light edits (kept behaviour intact where possible). Opens/closes drawer, focus trapping, and re-binds after re-render.
 
-    Implement a Cart Drawer that slides out and allows users to view and manage their cart seamlessly.
+### `assets/global.js`, `assets/constants.js`, `assets/pubsub.js`
+Dawn utilities (focus trapping, pub/sub, constants). `QuantityInput` is defined Dawn-style and listens for +/– and input change.
 
-## Getting Started
+### `sections/cart-drawer.liquid`
+The drawer’s markup. Keep the outer wrapper id as **`shopify-section-cart-drawer`** so one-shot replacement works.
 
-To get started follow the setup steps below:
+## CSS
 
-1. Fork this repository and navigate into the project directory.
-2. Run the following commands:
+- `assets/component-cart-items.css` — cart item grid rules (your grid at the bottom; preserved)
+- Other Dawn CSS components as usual
 
-```
-shopify theme push --store=velocity-tech-test --password=shptka_ea1e90de841c7cdaeb2ce101dd28caa6
-shopify theme list (find the theme ID for the one you just pushed)
-shopify theme dev --store=velocity-tech-test --password=shptka_ea1e90de841c7cdaeb2ce101dd28caa6 --theme=<theme-ID>
-```
+## Performance (why it feels slow and how to speed it up)
 
-You may be asked for a store password which is the following: piepea
+Current approach re-renders the **entire drawer section** after each change. Safe and Dawn-like, but heavy.
 
-Please feel free to use your own development store if you'd prefer. We have provided this for ease of getting started.
+### Improvements to consider (in order)
 
-## Project Designs
+1. **Batch quantity updates**  
+   Debounce rapid +/– clicks (≈200–300 ms) and send one request to `/cart/update.js`.
 
-URL: https://www.figma.com/design/TkWkSt0pv0zW2wCvNgcvQq/Velocity---Tech-Test?node-id=0-1&m=dev&t=h5BxnTuRw1MdlGcn-1
-Password: v3l0c1ty
+2. **Avoid double-loading scripts**  
+   Ensure `cart.js` / `cart-drawer.js` aren’t included twice in `theme.liquid`.
 
-Note – you may be required to log in to access editing tools to find out css properties.
+3. **Partial swaps when safe**  
+   For non-empty → non-empty changes, swap only `<cart-drawer-items>` and `.drawer__footer`. Keep full replacement for empty ↔ non-empty.
 
-## Submission
+4. **Minimise DOM work**  
+   Parse HTML once; query exact nodes; prefer `.replaceWith()` over large `innerHTML` writes.
 
-### When you're done, submit:
+5. **Micro-UX**  
+   Disable buttons during requests; show small row spinners (Dawn’s loading spinner exists).
 
--   A GitHub repository with your code.
--   A README file with instructions on how to set up and run your project locally.
+## Cart/header coupling (making it feel tighter)
 
-### What We're Looking For
-
--   Functionality: Does your solution meet the requirements?
--   Code Quality: Is your code clean, readable, and well-organized?
--   User Experience: Is the interface intuitive and easy to use?
-
-### Good Luck!
-
-If you run into any issues or have any questions, feel free to reach out to a.pearson@digital-velocity.co.uk
+- Always replace the full `#cart-icon-bubble` from its section to keep counts in sync.  
+- When opening the drawer programmatically:
+  ```js
+  const drawer = document.querySelector('cart-drawer');
+  drawer.open();
+  drawer.querySelector('cart-drawer-items')?.scrollTo({ top: 0 });
