@@ -1,0 +1,66 @@
+{{ 'product-card.css' | asset_url | stylesheet_tag }}
+{{ 'main-collection.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    padding-top: {{ section.settings.section_padding }}px;
+    padding-bottom: {{ section.settings.section_padding }}px;
+  }
+{% endstyle %}
+
+<div class="collection__container container">
+  <div class="collection__header">
+    <h1 class="collection__title">{{ section.settings.header | default: collection.title }}</h1>
+  </div>
+  <div class="collection__products product-grid">
+    {% paginate collection.products by section.settings.products_per_page %}
+      {% for product in collection.products %}
+        {% render 'product-card', product: product %}
+      {% endfor %}
+      {{ paginate | default_pagination: next: 'Next', previous: 'Previous' }}
+    {% endpaginate %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection",
+  "class": "collection",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "header",
+      "label": "Heading",
+      "default": "This is a page title"
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 12,
+      "max": 48,
+      "step": 4,
+      "label": "Products per page",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Styles"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "label": "Section padding",
+      "default": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection"
+    }
+  ]
+}
+{% endschema %}

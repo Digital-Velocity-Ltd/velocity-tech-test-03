@@ -1,20 +1,32 @@
 <!doctype html>
 <html lang="{{ shop.locale }}">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="">
-  <link rel="canonical" href="{{ canonical_url }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <title>{{ shop.name }}</title>
+    <meta name="description" content="">
 
-  <title>{{ shop.name }}</title>
+    {% render 'theme-variables' %}
+    {% render 'theme-style-variables' %}
 
-  <meta name="description" content="">
+    {{ 'utils.css' | asset_url | stylesheet_tag }}
+    {{ 'header.css' | asset_url | stylesheet_tag }}
+    {{ 'cart-drawer.css' | asset_url | stylesheet_tag }}
+    {{ 'footer.css' | asset_url | stylesheet_tag }}
 
-  {{ content_for_header }}
-</head>
+    {{ content_for_header }}
+  </head>
 
-<body>
-  {{ content_for_layout }}
-</body>
+  <body>
+    {% section 'header' %}
+    <main>
+      {{ content_for_layout }}
+    </main>
+    {% section 'footer' %}
+    {% render 'cart-drawer' %}
+    <script src="{{ 'cart-drawer.js' | asset_url }}" defer></script>
+  </body>
 </html>

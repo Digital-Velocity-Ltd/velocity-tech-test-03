@@ -1,0 +1,149 @@
+.header {
+  background-color: var(--color-header-footer-background);
+  color: var(--color-text-secondary);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header__grid {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .header__grid {
+    gap: 2rem;
+  }
+}
+
+/* Logo */
+.header__logo {
+  display: flex;
+  align-items: center;
+}
+
+.header__logo img {
+  height: 40px;
+  width: auto;
+  max-width: 150px;
+  object-fit: contain;
+}
+
+@media (min-width: 768px) {
+  .header__logo img {
+    height: 50px;
+  }
+}
+
+/* Menu */
+.header__menu {
+  display: flex;
+  justify-content: center;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+}
+
+.menu__list {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 768px) {
+  .menu__list {
+    gap: 2rem;
+  }
+}
+
+.menu__item {
+  margin: 0;
+}
+
+.menu__link {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: opacity 0.2s ease;
+}
+
+.menu__link:hover {
+  opacity: 0.8;
+}
+
+@media (min-width: 768px) {
+  .menu__link {
+    font-size: 1rem;
+  }
+}
+
+/* Icons */
+.header__icons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header__icon {
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s ease;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.header__icon:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.header__icon-text {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.header__icon-text span {
+  color: var(--color-text-secondary);
+}
+
+@media (min-width: 768px) {
+  .header__icon-text {
+    font-size: 1rem;
+  }
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 767px) {
+  .header__grid {
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+  }
+
+  .header__menu {
+    display: none;
+  }
+
+  .header__icons {
+    gap: 0.75rem;
+  }
+
+  .header__icon-text {
+    font-size: 0.75rem;
+  }
+}

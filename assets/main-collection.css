@@ -1,0 +1,6 @@
+/* Collection Section Styles */
+.collection__title {
+  text-align: center;
+  padding: 30px 10px;
+  font-weight: var(--font-body-weight);
+}

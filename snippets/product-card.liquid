@@ -1,0 +1,64 @@
+<div class="product-card">
+  <div class="product-card__image-container">
+    {{
+      product.featured_image
+      | image_url: width: 600
+      | image_tag:
+        class: 'product-card__image',
+        alt: product.featured_image.alt,
+        sizes: '(min-width: 1440px) 288px, (min-width: 1024px) 240px, (min-width: 768px) 200px, (min-width: 480px) calc(50vw - 2rem), calc(100vw - 2.5rem)',
+        widths: '200, 240, 288, 320, 400, 480, 600'
+    }}
+  </div>
+
+  <div class="product-card__info">
+    <div class="product-card__info-header">
+      <h3 class="product-card__name">{{ product.title }}</h3>
+      <p class="product-card__size">Size 9</p>
+    </div>
+
+    <div class="product-card__info-separator"></div>
+
+    <div class="product-card__info-footer">
+      <div class="product-card__quantity-controls">
+        <button
+          type="button"
+          class="product-card__quantity-button product-card__quantity-decrease"
+          data-quantity-decrease
+          data-quantity-target="quantity-{{ product.id }}"
+          aria-label="Decrease quantity"
+        >
+          -
+        </button>
+        <input
+          type="number"
+          id="quantity-{{ product.id }}"
+          value="1"
+          min="1"
+          class="product-card__quantity-input"
+          data-quantity-for="{{ product.selected_or_first_available_variant.id }}"
+        >
+        <button
+          type="button"
+          class="product-card__quantity-button product-card__quantity-increase"
+          data-quantity-increase
+          data-quantity-target="quantity-{{ product.id }}"
+          aria-label="Increase quantity"
+        >
+          +
+        </button>
+      </div>
+      <div class="product-card__price">{{ product.price | money }}</div>
+    </div>
+  </div>
+
+  <button
+    type="button"
+    class="product-card__add-to-cart"
+    data-add-to-cart
+    data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+    data-product-title="{{ product.title }}"
+  >
+    Add to Cart
+  </button>
+</div>

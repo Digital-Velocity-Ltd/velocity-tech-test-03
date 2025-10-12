@@ -1,58 +1,120 @@
-<img src="./velocity-tech-test.png" alt="drawing" width="100%"/>
+# Test summary
 
-## Welcome, Developer!
+Though not complete I believe I've given a good indication of my work standards. I went over my strict 2hr abit, as I got carried away. I didnt bother withvite, as it wasn't large enough to warrant it. Same again with Typescript.
 
-You've been tasked with helping Digital Velocity bring a fresh collection page and a functional cart drawer to life. Your goal is to build these features from scratch, incorporating a structure for styling, JavaScript, and HTML that best suits your development style and approach.
+## 🚀 Features
 
-The purpose of this exercise isn't to complete everything but rather to demonstrate your thought process, coding practices, and overall implementation skills. You're free to spend as much or as little time on it as you're comfortable with.
+### Core Components
 
-### Challange
+- **Responsive Header** - Logo, navigation menu, and cart/account icons
+- **Interactive Cart Drawer** - Custom slide-out cart with real-time updates
+- **Product Cards** - Optimized product display with quantity controls and add-to-cart functionality
+- **Collection Pages** - Flexible product grid with pagination and customizable settings
+- **Footer Section** - Extensible footer area
 
-1. #### Collection Page
+### Technical Features
 
-    Build a Collection Page that displays a grid of products, styled and structured to match the design specifications.
+- **Custom Web Components** - Modern JavaScript using Custom Elements API
+- **Real-time Cart Updates** - AJAX cart functionality without page refreshes
+- **Responsive Design** - Mobile-first approach with flexible layouts
+- **Performance Optimized** - Efficient asset loading and minimal dependencies
+- **Accessibility** - ARIA labels and keyboard navigation support
 
-2. #### Cart Drawer
+## 📁 Project Structure
 
-    Implement a Cart Drawer that slides out and allows users to view and manage their cart seamlessly.
+### Sections (`/sections/`)
 
-## Getting Started
+- `header.liquid` - Site header with logo, navigation, and cart icon
+- `footer.liquid` - Site footer (minimal implementation)
 
-To get started follow the setup steps below:
+### Snippets (`/snippets/`)
 
-1. Fork this repository and navigate into the project directory.
-2. Run the following commands:
+- `cart-drawer.liquid` - Cart drawer HTML template
+- `product-card.liquid` - Reusable product card component
+- `menu.liquid` - Navigation menu component
+- `theme-variables.liquid` - Global theme variables - Not in use
+- `theme-style-variables.liquid` - CSS custom properties
 
-```
-shopify theme push --store=velocity-tech-test --password=shptka_ea1e90de841c7cdaeb2ce101dd28caa6
-shopify theme list (find the theme ID for the one you just pushed)
-shopify theme dev --store=velocity-tech-test --password=shptka_ea1e90de841c7cdaeb2ce101dd28caa6 --theme=<theme-ID>
-```
+### Assets (`/assets/`)
 
-You may be asked for a store password which is the following: piepea
+- `cart-drawer.css` - Cart drawer styling and animations
+- `cart-drawer.js` - Cart drawer functionality and AJAX cart operations
+- `header.css` - Header component styling
+- `product-card.css` - Product card styling and responsive design
+- `main-collection.css` - Collection page specific styles
+- `footer.css` - Footer component styling
+- `utils.css` - Utility classes and global styles
 
-Please feel free to use your own development store if you'd prefer. We have provided this for ease of getting started.
+### Configuration (`/config/`)
 
-## Project Designs
+- `settings_schema.json` - Theme customization options
 
-URL: https://www.figma.com/design/TkWkSt0pv0zW2wCvNgcvQq/Velocity---Tech-Test?node-id=0-1&m=dev&t=h5BxnTuRw1MdlGcn-1
-Password: v3l0c1ty
+## 🛠 Key Components
 
-Note – you may be required to log in to access editing tools to find out css properties.
+### Cart Drawer System
 
-## Submission
+The cart drawer is built as a custom web component (`dv-cart-drawer`) with the following features:
 
-### When you're done, submit:
+- **Slide-out animation** from the right side of the screen
+- **Real-time updates** when items are added, modified, or removed
+- **Quantity controls** with increment/decrement buttons
+- **Item removal** functionality
+- **Subtotal calculation** and display
+- **Checkout integration** with direct links to Shopify checkout
 
--   A GitHub repository with your code.
--   A README file with instructions on how to set up and run your project locally.
+### Product Card Component
 
-### What We're Looking For
+Each product card includes:
 
--   Functionality: Does your solution meet the requirements?
--   Code Quality: Is your code clean, readable, and well-organized?
--   User Experience: Is the interface intuitive and easy to use?
+- **Responsive image** with multiple breakpoints and sizes
+- **Quantity selector** with +/- controls
+- **Add to cart button** with variant ID integration
+- **Price display** with proper money formatting
+- **Accessibility features** with proper ARIA labels
 
-### Good Luck!
+## 🎨 Styling Architecture
 
-If you run into any issues or have any questions, feel free to reach out to a.pearson@digital-velocity.co.uk
+The theme uses a modular CSS approach:
+
+- **Component-based styling** - Each major component has its own CSS file
+- **CSS Custom Properties** - Theme variables for consistent theming
+- **Responsive design** - Mobile-first approach with breakpoint-based layouts
+- **Utility classes** - Reusable styling patterns in `utils.css`
+
+## ⚙️ Theme Customization
+
+### Settings Available
+
+- **Typography** - Font selection for headings and body text
+- **Header** - Logo upload, menu selection, background colors
+- **Collection** - Products per page, section padding, custom headers
+- **Cart Drawer** - Customizable styling and behavior
+
+### Development Setup
+
+1. No build tools. Didn't think it was nessesary, due to the size and time of the project
+
+## 🔧 JavaScript Functionality
+
+### Cart Operations
+
+- **Add to cart** - AJAX requests to `/cart/add.js`
+- **Update quantities** - Real-time updates via `/cart/change.js`
+- **Remove items** - Item removal with quantity set to 0
+- **Cart state management** - Automatic UI updates and count synchronization
+
+## 📱 Responsive Design
+
+The theme is built with a mobile-first approach:
+
+- **Breakpoints**: 480px, 768px, 1024px, 1440px
+- **Flexible grids** that adapt to different screen sizes
+- **Touch-friendly** interface elements
+- **Optimized images** with responsive sizing
+
+## 🚀 Performance Features
+
+- **Minimal dependencies** - Pure vanilla JavaScript
+- **Efficient asset loading** - CSS and JS loaded only when needed
+- **Optimized images** - Multiple sizes and formats for different devices
+- **Lazy loading ready** - Structure supports future lazy loading implementation

@@ -1,0 +1,52 @@
+{% style %}
+  :root {
+    /* Legacy color variables */
+    --color-primary: #000;
+    --color-secondary: #fff;
+
+    /* Background Colors */
+    --color-page-background: #CCD0D6;
+    --color-header-footer-background: #1E3563;
+    --color-card-background: #ffffff;
+
+    /* Text Colors */
+    --color-text-primary: #000000;
+    --color-text-secondary: #ffffff;
+
+    /* Button */
+    --color-button-primary: #000000;
+    --color-button-primary-text: #ffffff;
+    --color-button-primary-hover: #333333;
+    --color-button-primary-active: #666666;
+    --color-button-border-color: #ffffff;
+
+    /* Typography */
+    --font-heading: {{ settings.heading_font.family }}, {{ settings.heading_font.fallback_families }};
+    --font-body: {{ settings.body_font.family }}, {{ settings.body_font.fallback_families }};
+    --font-heading-weight: {{ settings.heading_font.weight }};
+    --font-body-weight: {{ settings.body_font.weight }};
+
+    /* Borders */
+    --color-border-light: #E9ECF0;
+
+    /* Accent/Tag Colors */
+    --color-tag-new-background: #64b464;
+    --color-tag-new-mint: #a8e6cf;
+    --color-tag-offer-background: #ff6478;
+    --color-tag-text: #ffffff;
+
+    /* Icon Colors */
+    --color-icon-light: #ffffff;
+    --color-icon-dark: #000000;
+
+    /* Layout - Container */
+    --container-width: 100%;
+    --container-max-width: 1200px;
+    --container-margin: 0 auto;
+    --container-padding-mobile: 1rem;
+    --container-padding-desktop: 2rem;
+    @media (width >= 1600px) {
+      --container-max-width: 1440px;
+    }
+  }
+{% endstyle %}

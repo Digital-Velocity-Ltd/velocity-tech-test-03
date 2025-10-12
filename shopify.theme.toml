@@ -1,0 +1,10 @@
+[environments.dev]
+store = "philblakemore"
+
+[environments.ignore-settings]
+store = "philblakemore"
+ignore = ["config/*.json", "layout/*.json", "templates/*.json", "sections/*.json"]
+
+[environments.velocity]
+store = "velocity-tech-test"
+password = "shptka_ea1e90de841c7cdaeb2ce101dd28caa6"
